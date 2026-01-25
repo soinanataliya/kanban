@@ -1,23 +1,18 @@
 import { createServer } from 'http'
-import { createSchema, createYoga } from 'graphql-yoga'
+import { createYoga, createSchema } from 'graphql-yoga'
+import { typeDefs } from './schema/typeDefs'
+import { resolvers } from './schema/resolvers'
 
-const yoga = createYoga({
-  schema: createSchema({
-    typeDefs: /* GraphQL */ `
-      type Query {
-        hello: String
-      }
-    `,
-    resolvers: {
-      Query: {
-        hello: () => 'Hello from Yoga!'
-      }
-    }
-  })
+const schema = createSchema({
+  typeDefs,
+  resolvers,
 })
 
-const server = createServer(yoga)
+const yoga = createYoga({
+  schema,
+  graphqlEndpoint: '/graphql',
+})
 
-server.listen(4000, () => {
+createServer(yoga).listen(4000, () => {
   console.info('Server is running on http://localhost:4000/graphql')
 })

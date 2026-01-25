@@ -1,6 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "dependencies": {
     "graphql": "16.12.0",
@@ -9,9 +10,10 @@
   "devDependencies": {
     "@types/node": "22.10.2",
     "ts-node": "10.9.2",
+    "tsx": "4.21.0",
     "typescript": "5.7.2"
   },
   "scripts": {
-    "dev": "ts-node server.ts"
+    "dev": "tsx watch server.ts"
   }
 }
