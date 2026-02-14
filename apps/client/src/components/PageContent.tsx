@@ -1,4 +1,4 @@
-import KanbanPlaceholder from "./KanbanPlaceholder";
+import KanbanPlaceholder from "./KanbanPage";
 
 const PageContent = () => {
   return (

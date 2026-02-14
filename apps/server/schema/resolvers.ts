@@ -1,9 +1,18 @@
-import { board, createColumn, createCard } from '../store.js'
+import { Board, board, Column, createCard, createColumn } from '../store.js'
 
 export const resolvers = {
   Query: {
     board: () => board,
   },
+
+  Board: {
+    columns: (board: Board) => board.columns,
+  },
+
+  Column: {
+    cards: (column: Column) => column.cards,
+  },
+
   Mutation: {
     createColumn: (_: any, { title }: { title: string }) => {
       return createColumn(title)

@@ -1,9 +1,16 @@
-import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router'
+import {
+  HeadContent,
+  Outlet,
+  Scripts,
+  createRootRoute,
+} from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
-
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import appCss from '../styles.css?url'
 import AppLayout from '@/components/AppLayout'
+
+const queryClient = new QueryClient()
 
 export const Route = createRootRoute({
   head: () => ({
@@ -37,9 +44,11 @@ function RootDocument() {
         <HeadContent />
       </head>
       <body>
-        <AppLayout>
-          <Outlet />
-        </AppLayout>
+        <QueryClientProvider client={queryClient}>
+          <AppLayout>
+            <Outlet />
+          </AppLayout>
+        </QueryClientProvider>
 
         <TanStackDevtools
           config={{

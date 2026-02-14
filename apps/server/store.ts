@@ -53,3 +53,20 @@ export function createCard(columnId: string, title: string) {
   column.cards.push(card)
   return card
 }
+
+export function seedBoard() {
+  if (board.columns.length > 0) {
+    return // for hot-reload
+  }
+
+  const todo = createColumn('Todo');
+  const inProgress = createColumn('In Progress');
+  const done = createColumn('Done');
+
+  createCard(todo.id, 'Set up project');
+  createCard(todo.id, 'Create GraphQL schema');
+
+  createCard(inProgress.id, 'Implement kanban UI');
+
+  createCard(done.id, 'Drink coffee');
+}
