@@ -70,3 +70,34 @@ export function seedBoard() {
 
   createCard(done.id, 'Drink coffee');
 }
+
+export function moveCard(cardId: string, targetColumnId: string) {
+  let cardToMove: Card | undefined;
+  let sourceColumn: Column | undefined;
+
+  for (const column of board.columns) {
+    const index = column.cards.findIndex((card) => card.id === cardId);
+
+    if (index !== -1) {
+      cardToMove = column.cards[index];
+      sourceColumn = column;
+      column.cards.splice(index, 1);
+      break;
+    }
+  }
+
+  if (!cardToMove) {
+    throw new Error('Card not found');
+  }
+
+  const targetColumn = board.columns.find((c) => c.id === targetColumnId);
+
+  if (!targetColumn) {
+    throw new Error('Target column not found');
+  }
+
+  cardToMove.order = targetColumn.cards.length;
+  targetColumn.cards.push(cardToMove);
+
+  return cardToMove;
+}

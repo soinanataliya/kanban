@@ -27,4 +27,10 @@ export const typeDefs = `
     createColumn(title: String!): Column!
     createCard(columnId: ID!, title: String!): Card!
   }
-`
+
+  type Mutation {
+    createColumn(title: String!): Column!
+    createCard(columnId: ID!, title: String!): Card!
+    moveCard(cardId: ID!, targetColumnId: ID!): Card!
+}
+`;
