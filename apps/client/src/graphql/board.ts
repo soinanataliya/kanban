@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request'
 
 export const BOARD_QUERY = gql`
-  query {
+  query Board {
   board {
     id
     title

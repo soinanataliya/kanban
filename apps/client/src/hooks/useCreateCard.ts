@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { CREATE_CARD_MUTATION } from '../graphql/createCard'
 import { graphqlClient } from '@/lib/graphqlClient'
+import { CreateCardDocument } from '@/gql/graphql'
 
 export function useCreateCard() {
   const queryClient = useQueryClient()
@@ -13,10 +13,7 @@ export function useCreateCard() {
       columnId: string
       title: string
     }) => {
-      return graphqlClient.request(CREATE_CARD_MUTATION, {
-        columnId,
-        title,
-      })
+      return graphqlClient.request(CreateCardDocument, { columnId, title })
     },
 
     onSuccess: () => {

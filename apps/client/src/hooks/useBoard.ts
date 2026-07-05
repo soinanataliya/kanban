@@ -1,32 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
-import { graphqlClient } from '../lib/graphqlClient'
-import { BOARD_QUERY } from '../graphql/board'
+import type { BoardQuery } from '@/gql/graphql'
+import { graphqlClient } from '@/lib/graphqlClient'
+import { BoardDocument } from '@/gql/graphql'
 
-type Board = {
-  columns: Column[];
-}
+type Board = BoardQuery['board']
 
-type Column = {
-  cards: Card[];
-  id: string;
-  title: string;
-  order: number;
-}
-
-type Card = {
-  id: string
-  title: string
-  description?: string
-  order: number
-}
 export function useBoard() {
-  return useQuery({
+  return useQuery<Board>({
     queryKey: ['board'],
     queryFn: async () => {
-      const data = await graphqlClient.request<{
-        board: Board
-      }>(BOARD_QUERY)
-
+      const data = await graphqlClient.request(BoardDocument)
       return data.board
     },
   })

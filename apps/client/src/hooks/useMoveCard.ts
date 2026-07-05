@@ -1,66 +1,64 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { Board } from '@/types/kanban';
-import type { MoveCardResponse, MoveCardVariables } from '@/types/mutations';
-import { graphqlClient } from '@/lib/graphqlClient';
-import { MOVE_CARD_MUTATION } from '@/graphql/moveCard';
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { BoardQuery, MoveCardMutation, MoveCardMutationVariables } from '@/gql/graphql'
+import { graphqlClient } from '@/lib/graphqlClient'
+import { MoveCardDocument } from '@/gql/graphql'
+
+type Board = BoardQuery['board']
+
+type MoveCardParams = MoveCardMutationVariables & {
+  fromColumnId: string
+}
 
 type MoveCardContext = {
-  previousBoard?: Board;
-};
+  previousBoard?: Board
+}
 
 export function useMoveCard() {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
-  return useMutation<
-    MoveCardResponse,
-    Error,
-    MoveCardVariables,
-    MoveCardContext
-  >({
-    mutationFn: (variables) =>
-      graphqlClient.request<MoveCardResponse>(
-        MOVE_CARD_MUTATION,
-        variables,
-      ),
+  return useMutation<MoveCardMutation, Error, MoveCardParams, MoveCardContext>({
+    mutationFn: ({ cardId, targetColumnId }) =>
+      graphqlClient.request(MoveCardDocument, { cardId, targetColumnId }),
 
-    onMutate: async ({ cardId, fromColumnId, targetColumnId }) => {
-      await queryClient.cancelQueries({ queryKey: ['board'] });
+    onMutate: async ({
+      cardId,
+      fromColumnId,
+      targetColumnId,
+    }: MoveCardParams) => {
+      await queryClient.cancelQueries({ queryKey: ['board'] })
 
-      const previousBoard = queryClient.getQueryData<Board>(['board']);
+      const previousBoard = queryClient.getQueryData<Board>(['board'])
 
       queryClient.setQueryData<Board>(['board'], (old) => {
-        if (!old) return old;
+        if (!old) return old
 
-        const board = structuredClone(old);
+        const cloned = structuredClone(old)
 
-        const source = board.columns.find((card) => card.id === fromColumnId);
-        const target = board.columns.find((card) => card.id === targetColumnId);
+        const source = cloned.columns.find((col) => col.id === fromColumnId)
+        const target = cloned.columns.find((col) => col.id === targetColumnId)
 
-        if (!source || !target) return old;
+        if (!source || !target) return old
 
-        const index = source.cards.findIndex((card) => card.id === cardId);
+        const index = source.cards.findIndex((c) => c.id === cardId)
+        if (index === -1) return old
 
-        if (index === -1) return old;
+        const [card] = source.cards.splice(index, 1)
+        target.cards.push(card)
 
-        const card = source.cards.splice(index, 1)[0];
+        return cloned
+      })
 
-        card.columnId = targetColumnId;
-        target.cards.push(card);
-
-        return board;
-      });
-
-      return { previousBoard };
+      return { previousBoard }
     },
 
     onError: (_err, _vars, context) => {
       if (context?.previousBoard) {
-        queryClient.setQueryData(['board'], context.previousBoard);
+        queryClient.setQueryData(['board'], context.previousBoard)
       }
     },
 
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['board'] });
+      queryClient.invalidateQueries({ queryKey: ['board'] })
     },
-  });
+  })
 }

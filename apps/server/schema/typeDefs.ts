@@ -1,36 +1,9 @@
-export const typeDefs = `
-  type Board {
-    id: ID!
-    title: String!
-    columns: [Column!]!
-  }
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
 
-  type Column {
-    id: ID!
-    title: String!
-    order: Int!
-    cards: [Card!]!
-  }
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-  type Card {
-    id: ID!
-    title: String!
-    description: String
-    order: Int!
-  }
+export const typeDefs = readFileSync(resolve(__dirname, 'schema.graphql'), 'utf-8');
 
-  type Query {
-    board: Board!
-  }
-
-  type Mutation {
-    createColumn(title: String!): Column!
-    createCard(columnId: ID!, title: String!): Card!
-  }
-
-  type Mutation {
-    createColumn(title: String!): Column!
-    createCard(columnId: ID!, title: String!): Card!
-    moveCard(cardId: ID!, targetColumnId: ID!): Card!
-}
-`;
