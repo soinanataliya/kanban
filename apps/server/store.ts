@@ -41,7 +41,7 @@ export function createColumn(title: string) {
 }
 
 export function createCard(columnId: string, title: string) {
-  const column = board.columns.find((c) => c.id === columnId)
+  const column = board.columns.find((col) => col.id === columnId)
   if (!column) throw new Error('Column not found')
 
   const card: Card = {
@@ -71,6 +71,29 @@ export function seedBoard() {
   createCard(done.id, 'Drink coffee');
 }
 
+export function deleteCard(cardId: string) {
+  for (const column of board.columns) {
+    const index = column.cards.findIndex((card) => card.id === cardId)
+    if (index !== -1) {
+      column.cards.splice(index, 1)
+      return cardId
+    }
+  }
+  throw new Error('Card not found')
+}
+
+export function updateBoardTitle(title: string) {
+  board.title = title
+  return board
+}
+
+export function resetBoard() {
+  board.title = 'My Kanban Board'
+  board.columns = []
+  seedBoard()
+  return board
+}
+
 export function moveCard(cardId: string, targetColumnId: string) {
   let cardToMove: Card | undefined;
   let sourceColumn: Column | undefined;
@@ -90,7 +113,7 @@ export function moveCard(cardId: string, targetColumnId: string) {
     throw new Error('Card not found');
   }
 
-  const targetColumn = board.columns.find((c) => c.id === targetColumnId);
+  const targetColumn = board.columns.find((col) => col.id === targetColumnId);
 
   if (!targetColumn) {
     throw new Error('Target column not found');

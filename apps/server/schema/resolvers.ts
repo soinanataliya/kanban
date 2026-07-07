@@ -5,6 +5,9 @@ import {
   createCard,
   createColumn,
   moveCard,
+  deleteCard,
+  updateBoardTitle,
+  resetBoard,
 } from "../store.js";
 
 export const resolvers = {
@@ -35,6 +38,15 @@ export const resolvers = {
       { cardId, targetColumnId }: { cardId: string; targetColumnId: string },
     ) => {
       return moveCard(cardId, targetColumnId);
+    },
+    deleteCard: (_: unknown, { cardId }: { cardId: string }) => {
+      return deleteCard(cardId);
+    },
+    updateBoardTitle: (_: unknown, { title }: { title: string }) => {
+      return updateBoardTitle(title);
+    },
+    resetBoard: () => {
+      return resetBoard();
     },
   },
 };

@@ -11,6 +11,7 @@
 - No `any` types — prefer `unknown` with type narrowing.
 - Prefer named exports over default exports.
 - Component props are defined as a local `type Props = { ... }` above the component.
+- No single-letter variable names in loops/callbacks (`(c)` → `(card)`, `(col)`).
 
 ## Tech stack
 - Frontend: React 19, TanStack Router, TanStack Query, Tailwind CSS v4, Vite 7

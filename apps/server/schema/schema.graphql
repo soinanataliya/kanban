@@ -26,4 +26,7 @@ type Mutation {
   createColumn(title: String!): Column!
   createCard(columnId: ID!, title: String!): Card!
   moveCard(cardId: ID!, targetColumnId: ID!): Card!
+  deleteCard(cardId: ID!): ID!
+  updateBoardTitle(title: String!): Board!
+  resetBoard: Board!
 }

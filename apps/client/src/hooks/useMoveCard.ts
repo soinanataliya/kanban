@@ -39,7 +39,7 @@ export function useMoveCard() {
 
         if (!source || !target) return old
 
-        const index = source.cards.findIndex((c) => c.id === cardId)
+        const index = source.cards.findIndex((card) => card.id === cardId)
         if (index === -1) return old
 
         const [card] = source.cards.splice(index, 1)
