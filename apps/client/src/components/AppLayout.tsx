@@ -1,5 +1,5 @@
-import Header from './Header'
-import Sidebar from './Sidebar'
+import Header from './Header';
+import Sidebar from './Sidebar';
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -10,7 +10,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         <main className="flex-1 overflow-auto p-6">{children}</main>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AppLayout
+export default AppLayout;

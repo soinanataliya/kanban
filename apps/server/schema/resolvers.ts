@@ -35,9 +35,13 @@ export const resolvers = {
     },
     moveCard: (
       _: unknown,
-      { cardId, targetColumnId }: { cardId: string; targetColumnId: string },
+      {
+        cardId,
+        targetColumnId,
+        dropIndex,
+      }: { cardId: string; targetColumnId: string; dropIndex: number },
     ) => {
-      return moveCard(cardId, targetColumnId);
+      return moveCard(cardId, targetColumnId, dropIndex);
     },
     deleteCard: (_: unknown, { cardId }: { cardId: string }) => {
       return deleteCard(cardId);

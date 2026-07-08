@@ -1,9 +1,13 @@
-import { gql } from 'graphql-request'
+import { gql } from 'graphql-request';
 
 export const MOVE_CARD_MUTATION = gql`
-mutation MoveCard($cardId: ID!, $targetColumnId: ID!) {
-  moveCard(cardId: $cardId, targetColumnId: $targetColumnId) {
-    id
+  mutation MoveCard($cardId: ID!, $targetColumnId: ID!, $dropIndex: Int!) {
+    moveCard(
+      cardId: $cardId
+      targetColumnId: $targetColumnId
+      dropIndex: $dropIndex
+    ) {
+      id
+    }
   }
-}
 `;

@@ -1,4 +1,4 @@
-import { gql } from 'graphql-request'
+import { gql } from 'graphql-request';
 
 export const UPDATE_BOARD_TITLE_MUTATION = gql`
   mutation UpdateBoardTitle($title: String!) {
@@ -7,4 +7,4 @@ export const UPDATE_BOARD_TITLE_MUTATION = gql`
       title
     }
   }
-`
+`;

@@ -1,64 +1,62 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { BoardQuery, MoveCardMutation, MoveCardMutationVariables } from '@/gql/graphql'
-import { graphqlClient } from '@/lib/graphqlClient'
-import { MoveCardDocument } from '@/gql/graphql'
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { moveCardInBoard } from './moveCardInBoard';
+import type {
+  BoardQuery,
+  MoveCardMutation,
+  MoveCardMutationVariables,
+} from '@/gql/graphql';
+import { graphqlClient } from '@/lib/graphqlClient';
+import { MoveCardDocument } from '@/gql/graphql';
 
-type Board = BoardQuery['board']
+type Board = BoardQuery['board'];
 
 type MoveCardParams = MoveCardMutationVariables & {
-  fromColumnId: string
-}
+  fromColumnId: string;
+  dropIndex: number;
+};
 
 type MoveCardContext = {
-  previousBoard?: Board
-}
+  previousBoard?: Board;
+};
 
 export function useMoveCard() {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation<MoveCardMutation, Error, MoveCardParams, MoveCardContext>({
-    mutationFn: ({ cardId, targetColumnId }) =>
-      graphqlClient.request(MoveCardDocument, { cardId, targetColumnId }),
+    mutationFn: ({ cardId, targetColumnId, dropIndex }) =>
+      graphqlClient.request(MoveCardDocument, {
+        cardId,
+        targetColumnId,
+        dropIndex,
+      }),
 
-    onMutate: async ({
-      cardId,
-      fromColumnId,
-      targetColumnId,
-    }: MoveCardParams) => {
-      await queryClient.cancelQueries({ queryKey: ['board'] })
+    onMutate: async (params: MoveCardParams) => {
+      await queryClient.cancelQueries({ queryKey: ['board'] });
 
-      const previousBoard = queryClient.getQueryData<Board>(['board'])
+      const previousBoard = queryClient.getQueryData<Board>(['board']);
 
       queryClient.setQueryData<Board>(['board'], (old) => {
-        if (!old) return old
+        if (!old) return old;
+        return moveCardInBoard(
+          old,
+          params.cardId,
+          params.fromColumnId,
+          params.targetColumnId,
+          params.dropIndex,
+        );
+      });
 
-        const cloned = structuredClone(old)
-
-        const source = cloned.columns.find((col) => col.id === fromColumnId)
-        const target = cloned.columns.find((col) => col.id === targetColumnId)
-
-        if (!source || !target) return old
-
-        const index = source.cards.findIndex((card) => card.id === cardId)
-        if (index === -1) return old
-
-        const [card] = source.cards.splice(index, 1)
-        target.cards.push(card)
-
-        return cloned
-      })
-
-      return { previousBoard }
+      return { previousBoard };
     },
 
     onError: (_err, _vars, context) => {
       if (context?.previousBoard) {
-        queryClient.setQueryData(['board'], context.previousBoard)
+        queryClient.setQueryData(['board'], context.previousBoard);
       }
     },
 
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['board'] })
+      queryClient.invalidateQueries({ queryKey: ['board'] });
     },
-  })
+  });
 }

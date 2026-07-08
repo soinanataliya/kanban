@@ -1,15 +1,18 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
-import { useBoard } from '@/hooks/useBoard'
+import { Link, createFileRoute } from '@tanstack/react-router';
+import { useBoard } from '@/hooks/useBoard';
 
-export const Route = createFileRoute('/')({ component: Home })
+export const Route = createFileRoute('/')({ component: Home });
 
 function Home() {
-  const { data: board, isLoading } = useBoard()
+  const { data: board, isLoading } = useBoard();
 
-  if (isLoading) return <div className="p-6">Loading…</div>
-  if (!board) return <div className="p-6">No board found</div>
+  if (isLoading) return <div className="p-6">Loading…</div>;
+  if (!board) return <div className="p-6">No board found</div>;
 
-  const totalCards = board.columns.reduce((sum, col) => sum + col.cards.length, 0)
+  const totalCards = board.columns.reduce(
+    (sum, col) => sum + col.cards.length,
+    0,
+  );
 
   return (
     <div className="p-6 space-y-6">
@@ -51,5 +54,5 @@ function Home() {
         {board.columns.length} columns · {totalCards} cards
       </div>
     </div>
-  )
+  );
 }

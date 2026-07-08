@@ -1,4 +1,4 @@
-import { gql } from 'graphql-request'
+import { gql } from 'graphql-request';
 
 export const RESET_BOARD_MUTATION = gql`
   mutation ResetBoard {
@@ -17,4 +17,4 @@ export const RESET_BOARD_MUTATION = gql`
       }
     }
   }
-`
+`;

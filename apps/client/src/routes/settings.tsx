@@ -1,36 +1,39 @@
-import { useState } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
-import { useBoard } from '@/hooks/useBoard'
-import { useUpdateBoardTitle } from '@/hooks/useUpdateBoardTitle'
-import { useResetBoard } from '@/hooks/useResetBoard'
+import { useState } from 'react';
+import { createFileRoute } from '@tanstack/react-router';
+import { useBoard } from '@/hooks/useBoard';
+import { useUpdateBoardTitle } from '@/hooks/useUpdateBoardTitle';
+import { useResetBoard } from '@/hooks/useResetBoard';
 
 export const Route = createFileRoute('/settings')({
   component: Settings,
-})
+});
 
 function Settings() {
-  const { data: board, isLoading } = useBoard()
-  const updateBoardTitle = useUpdateBoardTitle()
-  const resetBoard = useResetBoard()
-  const [title, setTitle] = useState('')
-  const [editing, setEditing] = useState(false)
+  const { data: board, isLoading } = useBoard();
+  const updateBoardTitle = useUpdateBoardTitle();
+  const resetBoard = useResetBoard();
+  const [title, setTitle] = useState('');
+  const [editing, setEditing] = useState(false);
 
-  if (isLoading) return <div className="p-6">Loading…</div>
-  if (!board) return <div className="p-6">No board found</div>
+  if (isLoading) return <div className="p-6">Loading…</div>;
+  if (!board) return <div className="p-6">No board found</div>;
 
-  const totalCards = board.columns.reduce((sum, col) => sum + col.cards.length, 0)
+  const totalCards = board.columns.reduce(
+    (sum, col) => sum + col.cards.length,
+    0,
+  );
 
   const handleSave = () => {
-    if (!title.trim()) return
-    updateBoardTitle.mutate({ title })
-    setEditing(false)
-  }
+    if (!title.trim()) return;
+    updateBoardTitle.mutate({ title });
+    setEditing(false);
+  };
 
   const handleReset = () => {
     if (window.confirm('Reset board to default? All data will be lost.')) {
-      resetBoard.mutate()
+      resetBoard.mutate();
     }
-  }
+  };
 
   return (
     <div className="p-6 max-w-lg space-y-8">
@@ -68,7 +71,10 @@ function Settings() {
             <span className="text-lg font-medium">{board.title}</span>
             <button
               className="rounded border px-3 py-1.5 text-sm hover:bg-gray-50"
-              onClick={() => { setTitle(board.title); setEditing(true) }}
+              onClick={() => {
+                setTitle(board.title);
+                setEditing(true);
+              }}
             >
               Edit
             </button>
@@ -104,5 +110,5 @@ function Settings() {
         </button>
       </section>
     </div>
-  )
+  );
 }

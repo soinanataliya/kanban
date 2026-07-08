@@ -1,29 +1,29 @@
-import { useDeleteCard } from '@/hooks/useDeleteCard'
+import { useDeleteCard } from '@/hooks/useDeleteCard';
 
 type CardType = {
   id: string;
   title: string;
   order: number;
-}
+};
 
 type Props = {
   card: CardType;
   columnId: string;
-}
+};
 
 const Card = ({ card, columnId }: Props) => {
-  const deleteCard = useDeleteCard()
+  const deleteCard = useDeleteCard();
 
   const handleDragStart = (event: React.DragEvent) => {
-    event.dataTransfer.setData('cardId', card.id)
-    event.dataTransfer.setData('fromColumnId', columnId)
-  }
+    event.dataTransfer.setData('cardId', card.id);
+    event.dataTransfer.setData('fromColumnId', columnId);
+  };
 
   const handleDelete = () => {
     if (window.confirm(`Delete "${card.title}"?`)) {
-      deleteCard.mutate({ cardId: card.id })
+      deleteCard.mutate({ cardId: card.id });
     }
-  }
+  };
 
   return (
     <div
@@ -39,7 +39,7 @@ const Card = ({ card, columnId }: Props) => {
         ✕
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;

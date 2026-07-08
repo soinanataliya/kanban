@@ -1,4 +1,4 @@
-import { gql } from 'graphql-request'
+import { gql } from 'graphql-request';
 
 export const CREATE_CARD_MUTATION = gql`
   mutation CreateCard($columnId: ID!, $title: String!) {
@@ -8,4 +8,4 @@ export const CREATE_CARD_MUTATION = gql`
       order
     }
   }
-`
+`;

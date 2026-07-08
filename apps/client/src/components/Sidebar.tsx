@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router';
 
 const Sidebar = () => {
   return (
@@ -34,6 +34,6 @@ const Sidebar = () => {
         </Link>
       </nav>
     </aside>
-  )
-}
-export default Sidebar
+  );
+};
+export default Sidebar;

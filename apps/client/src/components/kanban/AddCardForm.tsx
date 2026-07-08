@@ -3,11 +3,11 @@ import { useCreateCard } from '@/hooks/useCreateCard';
 
 type Props = {
   columnId: string;
-}
+};
 
 const AddCardForm = ({ columnId }: Props) => {
-  const [title, setTitle] = useState('')
-  const createCard = useCreateCard()
+  const [title, setTitle] = useState('');
+  const createCard = useCreateCard();
 
   const handleSubmit = () => {
     if (!title.trim()) {
@@ -17,10 +17,10 @@ const AddCardForm = ({ columnId }: Props) => {
     createCard.mutate({
       columnId,
       title,
-    })
+    });
 
-    setTitle('')
-  }
+    setTitle('');
+  };
 
   return (
     <div className="mt-3 flex flex-col gap-2">
@@ -38,7 +38,7 @@ const AddCardForm = ({ columnId }: Props) => {
         Add card
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default AddCardForm
+export default AddCardForm;
