@@ -1,4 +1,4 @@
-import { useDeleteCard } from '@/hooks/useDeleteCard';
+import { useDeleteCard } from '@/hooks/card/useDeleteCard';
 
 type CardType = {
   id: string;

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useCreateCard } from '@/hooks/useCreateCard';
+import { useCreateCard } from '@/hooks/card/useCreateCard';
 
 type Props = {
   columnId: string;

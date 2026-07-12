@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
-import { useBoard } from '@/hooks/useBoard';
+import { useBoard } from '@/hooks/board/useBoard';
 
 export const Route = createFileRoute('/')({ component: Home });
 

@@ -86,6 +86,26 @@ export function updateBoardTitle(title: string) {
   return board;
 }
 
+export function moveColumn(columnId: string, targetIndex: number) {
+  const sourceIndex = board.columns.findIndex((col) => col.id === columnId);
+  if (sourceIndex === -1) throw new Error("Column not found");
+
+  const [column] = board.columns.splice(sourceIndex, 1);
+  const adjustedIndex =
+    sourceIndex < targetIndex ? targetIndex - 1 : targetIndex;
+  const clampedIndex = Math.max(0, Math.min(adjustedIndex, board.columns.length));
+  board.columns.splice(clampedIndex, 0, column);
+
+  recalculateBoardOrders();
+  return column;
+}
+
+function recalculateBoardOrders() {
+  board.columns.forEach((col, index) => {
+    col.order = index;
+  });
+}
+
 export function resetBoard() {
   board.title = "My Kanban Board";
   board.columns = [];

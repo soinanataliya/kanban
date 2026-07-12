@@ -5,6 +5,7 @@ import {
   createCard,
   createColumn,
   moveCard,
+  moveColumn,
   deleteCard,
   updateBoardTitle,
   resetBoard,
@@ -48,6 +49,12 @@ export const resolvers = {
     },
     updateBoardTitle: (_: unknown, { title }: { title: string }) => {
       return updateBoardTitle(title);
+    },
+    moveColumn: (
+      _: unknown,
+      { columnId, targetIndex }: { columnId: string; targetIndex: number },
+    ) => {
+      return moveColumn(columnId, targetIndex);
     },
     resetBoard: () => {
       return resetBoard();

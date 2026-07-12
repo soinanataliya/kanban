@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { useBoard } from '@/hooks/useBoard';
-import { useUpdateBoardTitle } from '@/hooks/useUpdateBoardTitle';
-import { useResetBoard } from '@/hooks/useResetBoard';
+import { useBoard } from '@/hooks/board/useBoard';
+import { useUpdateBoardTitle } from '@/hooks/board/useUpdateBoardTitle';
+import { useResetBoard } from '@/hooks/board/useResetBoard';
 
 export const Route = createFileRoute('/settings')({
   component: Settings,
