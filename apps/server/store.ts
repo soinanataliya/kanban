@@ -70,6 +70,24 @@ export function seedBoard() {
   createCard(done.id, "Drink coffee");
 }
 
+export function updateCard(
+  id: string,
+  title: string,
+  description?: string,
+): Card {
+  for (const column of board.columns) {
+    const card = column.cards.find((card) => card.id === id);
+    if (card) {
+      card.title = title;
+      if (description !== undefined) {
+        card.description = description;
+      }
+      return card;
+    }
+  }
+  throw new Error("Card not found");
+}
+
 export function deleteCard(cardId: string) {
   for (const column of board.columns) {
     const index = column.cards.findIndex((card) => card.id === cardId);
