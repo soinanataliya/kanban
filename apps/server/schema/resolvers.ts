@@ -5,6 +5,8 @@ import {
   Column,
   createCard,
   createColumn,
+  updateColumn,
+  deleteColumn,
   moveCard,
   moveColumn,
   deleteCard,
@@ -29,6 +31,15 @@ export const resolvers = {
   Mutation: {
     createColumn: (_: any, { title }: { title: string }) => {
       return createColumn(title);
+    },
+    updateColumn: (
+      _: unknown,
+      { id, title }: { id: string; title: string },
+    ) => {
+      return updateColumn(id, title);
+    },
+    deleteColumn: (_: unknown, { id }: { id: string }) => {
+      return deleteColumn(id);
     },
     createCard: (
       _: any,

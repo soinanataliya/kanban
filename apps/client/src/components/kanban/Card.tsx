@@ -72,7 +72,7 @@ const Card = ({ card, columnId }: Props) => {
             <input
               ref={inputRef}
               value={editTitle}
-              onChange={(e) => setEditTitle(e.target.value)}
+              onChange={(event) => setEditTitle(event.target.value)}
               onBlur={saveEdit}
               onKeyDown={handleKeyDown}
               className="min-w-0 flex-1 rounded border border-blue-400 px-1 py-0.5 text-sm outline-none"

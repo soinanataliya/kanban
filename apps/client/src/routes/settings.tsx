@@ -1,8 +1,12 @@
-import { useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { useBoard } from '@/hooks/board/useBoard';
 import { useUpdateBoardTitle } from '@/hooks/board/useUpdateBoardTitle';
 import { useResetBoard } from '@/hooks/board/useResetBoard';
+import { useUpdateColumn } from '@/hooks/column/useUpdateColumn';
+import { useCreateColumn } from '@/hooks/column/useCreateColumn';
+import { useDeleteColumn } from '@/hooks/column/useDeleteColumn';
+import BoardTitleSection from '@/components/settings/BoardTitleSection';
+import ColumnSection from '@/components/settings/ColumnSection';
 
 export const Route = createFileRoute('/settings')({
   component: Settings,
@@ -12,8 +16,9 @@ function Settings() {
   const { data: board, isLoading } = useBoard();
   const updateBoardTitle = useUpdateBoardTitle();
   const resetBoard = useResetBoard();
-  const [title, setTitle] = useState('');
-  const [editing, setEditing] = useState(false);
+  const updateColumn = useUpdateColumn();
+  const createColumn = useCreateColumn();
+  const deleteColumn = useDeleteColumn();
 
   if (isLoading) return <div className="p-6">Loading…</div>;
   if (!board) return <div className="p-6">No board found</div>;
@@ -23,64 +28,21 @@ function Settings() {
     0,
   );
 
-  const handleSave = () => {
-    if (!title.trim()) return;
-    updateBoardTitle.mutate({ title });
-    setEditing(false);
-  };
-
-  const handleReset = () => {
-    if (window.confirm('Reset board to default? All data will be lost.')) {
-      resetBoard.mutate();
-    }
-  };
-
   return (
     <div className="p-6 max-w-lg space-y-8">
       <h1 className="text-2xl font-bold">Settings</h1>
 
-      <section className="space-y-3">
-        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
-          Board
-        </h2>
+      <BoardTitleSection
+        title={board.title}
+        updateBoardTitle={updateBoardTitle}
+      />
 
-        {editing ? (
-          <div className="flex gap-2">
-            <input
-              className="flex-1 rounded border px-3 py-2 text-sm"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSave()}
-              autoFocus
-            />
-            <button
-              className="rounded bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600"
-              onClick={handleSave}
-            >
-              Save
-            </button>
-            <button
-              className="rounded border px-4 py-2 text-sm hover:bg-gray-50"
-              onClick={() => setEditing(false)}
-            >
-              Cancel
-            </button>
-          </div>
-        ) : (
-          <div className="flex items-center justify-between">
-            <span className="text-lg font-medium">{board.title}</span>
-            <button
-              className="rounded border px-3 py-1.5 text-sm hover:bg-gray-50"
-              onClick={() => {
-                setTitle(board.title);
-                setEditing(true);
-              }}
-            >
-              Edit
-            </button>
-          </div>
-        )}
-      </section>
+      <ColumnSection
+        columns={board.columns}
+        updateColumn={updateColumn}
+        createColumn={createColumn}
+        deleteColumn={deleteColumn}
+      />
 
       <section className="space-y-3">
         <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
@@ -104,7 +66,11 @@ function Settings() {
         </h2>
         <button
           className="rounded border border-red-300 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-          onClick={handleReset}
+          onClick={() => {
+            if (window.confirm('Reset board to default? All data will be lost.')) {
+              resetBoard.mutate();
+            }
+          }}
         >
           Reset board to default
         </button>

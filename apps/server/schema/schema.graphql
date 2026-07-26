@@ -24,6 +24,8 @@ type Query {
 
 type Mutation {
   createColumn(title: String!): Column!
+  updateColumn(id: ID!, title: String!): Column!
+  deleteColumn(id: ID!): ID!
   createCard(columnId: ID!, title: String!): Card!
   moveCard(cardId: ID!, targetColumnId: ID!, dropIndex: Int!): Card!
   deleteCard(cardId: ID!): ID!

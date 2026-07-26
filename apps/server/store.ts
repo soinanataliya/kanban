@@ -39,6 +39,21 @@ export function createColumn(title: string) {
   return column;
 }
 
+export function updateColumn(id: string, title: string): Column {
+  const column = board.columns.find((col) => col.id === id);
+  if (!column) throw new Error("Column not found");
+  column.title = title;
+  return column;
+}
+
+export function deleteColumn(id: string): string {
+  const index = board.columns.findIndex((col) => col.id === id);
+  if (index === -1) throw new Error("Column not found");
+  board.columns.splice(index, 1);
+  recalculateBoardOrders();
+  return id;
+}
+
 export function createCard(columnId: string, title: string) {
   const column = board.columns.find((col) => col.id === columnId);
   if (!column) throw new Error("Column not found");
